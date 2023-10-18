@@ -6,6 +6,11 @@ import store from "./utils/store";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import MainContainer from "./componants/MainContainer";
 import WatchPage from "./componants/WatchPage";
+
+import { useState } from "react";
+
+import SearchVideoContainer from "./componants/SearchVideoContainer";
+import MyContext from "./utils/searchTextContext";
 const appRouter = createBrowserRouter([
   {
     path: "/",
@@ -15,16 +20,25 @@ const appRouter = createBrowserRouter([
       { path: "watch", element: <WatchPage /> },
     ],
   },
+  {
+    path: "/Search/:searchTerm",
+    element: <SearchVideoContainer />,
+  },
 ]);
 
 function App() {
+  const [text, setText] = useState("Home");
+  console.log(text);
+
   return (
-    <Provider store={store}>
-      <div>
-        <Head />
-        <RouterProvider router={appRouter} />
-      </div>
-    </Provider>
+    <MyContext.Provider value={{ text, setText }}>
+      <Provider store={store}>
+        <div>
+          <Head />
+          <RouterProvider router={appRouter} />
+        </div>
+      </Provider>
+    </MyContext.Provider>
   );
 }
 
